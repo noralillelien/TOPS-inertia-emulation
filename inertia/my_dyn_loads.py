@@ -63,10 +63,11 @@ if __name__ == '__main__':
 
     print('Simulation completed in {:.2f} seconds.'.format(time.time() - t_0))
 
-    # fig = plt.figure()
-    # plt.plot(res['t'], np.abs(res['v']))
-    # plt.xlabel('Time [s]')
-    # plt.ylabel('Bus voltage')
+    fig = plt.figure()
+    plt.plot(res['t'], np.abs(res['v']),label = ps.buses['name'])
+    plt.xlabel('Time [s]')
+    plt.ylabel('Bus voltage')
+    plt.legend()
 
     # fig = plt.figure()
     # # Note: Geneartor current is higher than load current due to transformers
