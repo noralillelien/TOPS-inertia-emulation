@@ -1,32 +1,15 @@
 import json
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 results = []
 names = []
-with open('Basecase.json','r') as file:
-    res = json.load(file)
-    results.append(res)
-    names.append('Basecase')
-with open('Wind.json','r') as file2:
-    res2 = json.load(file2)
-    results.append(res2)
-    names.append('Wind')
-# with open('FFR.json','r') as file3:
-#     res3 = json.load(file3)
-#     results.append(res3)
-#     names.append('FFR')
-with open('Ny_FFR.json','r') as file6:
-    res6 = json.load(file6)
-    results.append(res6)
-    names.append('FFR')
-with open('FFR_and_SC.json','r') as file4:
-    res4 = json.load(file4)
-    results.append(res4)
-    names.append('FFR_and_SC')
-with open('SC.json','r') as file5:
-    res5 = json.load(file5)
-    results.append(res5)
-    names.append('SC')
+folder_path = Path('Results/SI/SI_limit')
+for name in sorted(folder_path.iterdir()):
+    with open(name,'r') as file:
+        res = json.load(file)
+        results.append(res)
+        names.append(name)
 
 for res in results:
     for key, value in res.items():
@@ -44,30 +27,55 @@ for res in results:
 # fig = plt.figure()
 # i = 0
 # for res in results:
-#     bus1 = [row[8] for row in res['v']]
-#     plt.plot(res['t'], np.abs(np.array(bus1)),label = names[i])
+#     bus7 = [row[8] for row in res['v']]
+#     plt.plot(res['t'], np.abs(np.array(bus7)),label = names[i] + ' bus 7')
 #     i+=1
-
+# i = 0
+# for res in results:
+#     bus7 = [row[10] for row in res['v']]
+#     plt.plot(res['t'], np.abs(np.array(bus7)),label = str(names[i]) + ' bus 9')
+#     i+=1
 # plt.xlabel('Time [s]')
 # plt.ylabel('Bus voltage')
 # plt.legend()
 # # plt.show()
-
-
-# fig = plt.figure()
-# plt.plot(res['t'], np.abs(res['VSC']))
+# plt.figure()
+# i=0
+# for res in results:
+#     plt.plot(res['t'], np.abs(np.array(res['load_P'])),label = str(names[i]) + ' L1')
+#     i+=1
 # plt.xlabel('Time [s]')
 # plt.ylabel('MW')
+# plt.legend()
+
+
+
+fig = plt.figure()
+plt.plot(res['t'], np.abs(res['VSC_SI']))
+plt.xlabel('Time [s]')
+plt.ylabel('MW')
 
 
 plt.figure()
-#plt.plot(res['t'], res['gen_speed'],label = ps.gen['GEN'].par['name'])
 i = 0
 for res in results:
     plt.plot(res['t'],50+50*np.mean((res['gen_speed']),axis = 1), label = names[i])
     i+=1
 plt.xlabel('Time [s]')
 plt.ylabel('Frequency [Hz]')
+#plt.ylim(49,51)
 plt.grid()
 plt.legend()
 plt.show()
+
+# plt.figure()
+# i = 0
+# for res in results:
+#     ROCOF = np.gradient(50+50*np.mean((res['gen_speed']),axis=1),res['t'])
+#     plt.plot(res['t'],ROCOF, label = names[i])
+#     i+=1
+# plt.xlabel('Time [s]')
+# plt.ylabel('ROCOF [Hz/s]')
+# plt.grid()
+# plt.legend()
+# plt.show()
